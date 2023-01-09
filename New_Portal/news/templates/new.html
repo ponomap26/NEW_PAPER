@@ -7,27 +7,22 @@ Post
 {% block content %}
 
 
-<h3>{{ time_now|date:'d M Y' }}</h3>
+
    <hr>
           <table>
            <tr>
                <td>Описание</td>
-               <td>Дата добавления</td>
                <td>Текст</td>
+               <td>Дата добавления</td>
+
            </tr>
-
-
                <td>{{ new.title }}</td>
                <td>{{ new.text|censor}}</td>
                <td>{{ new.dataCreation }}</td>
 
-
-
            </tr>
-
-
        </table>
 
-
+    <hr>
 
 {% endblock content %}
