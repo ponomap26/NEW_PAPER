@@ -20,7 +20,7 @@ Post
            <tr>
            {% for new in news %}
            <tr>
-               <td>{{ new.title }}</td>
+               <td>{{ new.title|censor }}</td>
                <td>{{ new.dataCreation|date:'d M y ' }}</td>
                <td>{{ new.text|truncatewords:20|censor}}</td>
            {% endfor %}

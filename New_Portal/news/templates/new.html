@@ -16,7 +16,7 @@ Post
                <td>Дата добавления</td>
 
            </tr>
-               <td>{{ new.title }}</td>
+               <td>{{ new.title|censor }}</td>
                <td>{{ new.text|censor}}</td>
                <td>{{ new.dataCreation|date:'d M y '}}</td>
 
