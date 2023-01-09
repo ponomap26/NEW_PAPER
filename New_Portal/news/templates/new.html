@@ -18,7 +18,7 @@ Post
            </tr>
                <td>{{ new.title }}</td>
                <td>{{ new.text|censor}}</td>
-               <td>{{ new.dataCreation }}</td>
+               <td>{{ new.dataCreation|date:'d M y '}}</td>
 
            </tr>
        </table>
