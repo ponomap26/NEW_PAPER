@@ -82,3 +82,5 @@ class PostUpdate(UpdateView):
     form_class = NewsEdit
     model = Post
     template_name = 'news_edit.html'
+
+
