@@ -42,7 +42,7 @@ class Post(models.Model):
     dataCreation = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name="Тип Поста")
     title = models.CharField(max_length=128, verbose_name="Заголовок")
-    text = models.TextField()
+    text = models.TextField(verbose_name=' ТЕКСТ')
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
 
