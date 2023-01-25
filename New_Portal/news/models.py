@@ -23,6 +23,8 @@ class Author(models.Model):
         self.save()
 
 
+
+
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
@@ -38,14 +40,13 @@ class Post(models.Model):
         (NEWS, 'НОВОСТЬ'),
         (ARTICLE, 'СТАТЬЯ'),
     )
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE, verbose_name="Категория Публикации")
+    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE,
+                                    verbose_name="Категория Публикации")
     dataCreation = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
     postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name="Тип Поста")
     title = models.CharField(max_length=128, verbose_name="Заголовок")
     text = models.TextField(verbose_name=' ТЕКСТ')
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
-
-
 
     def get_absolute_url(self):
         return reverse('new', args=[str(self.id)])
