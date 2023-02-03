@@ -23,10 +23,9 @@ class Author(models.Model):
         self.save()
 
 
-
-
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscription = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
         return f'{self.name}'
@@ -43,7 +42,7 @@ class Post(models.Model):
     categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE,
                                     verbose_name="Категория Публикации")
     dataCreation = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
-    postCategory = models.ManyToManyField(Category, through='PostCategory', verbose_name="Тип Поста")
+    category = models.ManyToManyField(Category, through='PostCategory', verbose_name="Тип Поста")
     title = models.CharField(max_length=128, verbose_name="Заголовок")
     text = models.TextField(verbose_name=' ТЕКСТ')
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
@@ -61,6 +60,9 @@ class Post(models.Model):
 
     def preview(self):
         return self.text[0:123] + '...'
+
+    def __str__(self):
+        return f'{self.category, self.categoryType}'
 
 
 class PostCategory(models.Model):
@@ -85,3 +87,16 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )

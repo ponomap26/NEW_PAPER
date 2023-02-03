@@ -8,7 +8,7 @@ class NewsForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['categoryType', 'author', 'postCategory', 'title', 'text']
+        fields = ['categoryType', 'author', 'category', 'title', 'text']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -33,7 +33,7 @@ class NewsEdit(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['categoryType',  'postCategory', 'title', 'text']
+        fields = ['categoryType',  'category', 'title', 'text']
 
     def clean(self):
         cleaned_data = super().clean()

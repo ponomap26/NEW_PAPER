@@ -22,6 +22,7 @@ urlpatterns = [
 
    path('accounts/', include('allauth.urls')),
    path('news/', include('news.urls')),
+   #path('subscriptions/<int:pk/', include('subscriptions.urls')),
 
 
 

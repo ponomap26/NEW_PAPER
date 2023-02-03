@@ -25,7 +25,7 @@ class PostFilter(FilterSet):
         fields = {
             'author': ['exact'],
             'title': ['icontains'],
-            'postCategory': ['exact'],
+            'category': ['exact'],
             'categoryType': ['exact'],
 
         }
