@@ -1,0 +1,85 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+{% block title %}
+Post
+{% endblock title %}
+
+{% block content %}
+
+<h1>Все новости</h1>
+    {% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscriptions' %}"class="btn btn-secondary btn-sm">Подписаться</a></p><a
+    {% endif %}
+
+    {% if category_news_list %}
+            <a href="{% url 'search' %}"class="btn btn-secondary btn-sm">Найти POST</a>
+        <h2>{% current_time '%d %b %Y' %}</h2>
+
+        {% if perms.news.add_new %}
+        <a href="{% url 'news_create' %}"class="btn btn-secondary btn-sm">Добавить POST</a>
+        {% endif %}
+
+<table>
+    <tr>
+        <td>Описание</td>
+        <td> Категория</td>
+        <td>Дата добавления</td>
+        <td>Текст</td>
+
+        {# Условие получается составным. #}
+        {% if perms.news.change_new or perms.news.delete_new %}
+        <td>Действия</td>
+        {% endif %}
+    <tr>
+        {% for new in category_news_list %}
+    <tr>
+        <td>
+            <a href="{% url 'new' new.id %}">{{ new.title|censor }}</a>
+        </td>
+        <td>
+            {% for category in new.category.all %}
+                <a href="{% url 'category_list' category.id %}" class="btn btn-secondary btn-sm">{{ category }}</a>
+            {% endfor %}
+        </td>
+        <td>{{ new.dataCreation|date:'d M y ' }}</td>
+        <td>{{ new.text|truncatewords:20|censor}}</td>
+        <td>
+            {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+            {% if perms.news.change_new %}
+            <a href="{% url 'news_edit' new.id %}"class="btn btn-secondary btn-sm">Изменить</a>
+            {% endif %}
+            {% if perms.news.delete_new %}
+            <a href="{% url 'news_delete' new.id %}"class="btn btn-secondary btn-sm">Удалить</a>
+            {% endif %}
+
+        </td>
+
+        {% endfor %}
+
+</table>
+<hr>
+    {% else %}
+    <h2>Новостей нет!</h2>
+    {% endif %}
+{# Информация о предыдущих страницах #}
+{% if page_obj.has_previous %}
+<a href="?page=1">1</a>
+{% if page_obj.previous_page_number != 1 %}
+...
+<a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+{% endif %}
+{% endif %}
+
+{# Информация о текущей странице #}
+{{ page_obj.number }}
+
+{# Информация о следующих страницах #}
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+{% if paginator.num_pages != page_obj.next_page_number %}
+...
+<a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+{% endif %}
+{% endif %}
+{% endblock content %}
