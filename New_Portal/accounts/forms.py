@@ -25,8 +25,8 @@ class SignUpForm(UserCreationForm):
 class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
-        # common_users = Group.objects.get(name="reader")
-        # user.groups.add(common_users)
+        common_users = Group.objects.get(name="reader")
+        user.groups.add(common_users)
 
         subject = 'Добро пожаловать в наш НОВОСТНОЙ ПОРТАЛ!'
         text = f'{user.username}, вы успешно зарегистрировались на сайте!'

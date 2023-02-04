@@ -76,7 +76,7 @@ class NewsSearch(ListView):
 class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     raise_exception = True
-    permission_required = ('news.add_new',)
+    permission_required = ('post.add',)
     model = Post
     template_name = 'news_create.html'
 
@@ -101,36 +101,36 @@ class PostUpdate(PermissionRequiredMixin, UpdateView):
     template_name = 'news_edit.html'
 
 
+
+# @login_required
+# @csrf_protect
+# def subscriptions(request):
+#     if request.method == 'POST':
+#         category_id = request.POST.get('category_id')
+#         category = Category.objects.get(id=category_id)
+#         action = request.POST.get('action')
 #
-@login_required
-@csrf_protect
-def subscriptions(request):
-    if request.method == 'POST':
-        category_id = request.POST.get('category_id')
-        category = Category.objects.get(id=category_id)
-        action = request.POST.get('action')
-
-        if action == 'subscribe':
-            Subscription.objects.create(user=request.user, category=category)
-        elif action == 'unsubscribe':
-            Subscription.objects.filter(
-                user=request.user,
-                category=category,
-            ).delete()
-
-    categories_with_subscriptions = Category.objects.annotate(
-        user_subscribed=Exists(
-            Subscription.objects.filter(
-                user=request.user,
-                category=OuterRef('pk'),
-            )
-        )
-    ).order_by('name')
-    return render(
-        request,
-        'subscriptions.html',
-        {'categories': categories_with_subscriptions},
-    )
+#         if action == 'subscribe':
+#             Subscription.objects.create(user=request.user, category=category)
+#         elif action == 'unsubscribe':
+#             Subscription.objects.filter(
+#                 user=request.user,
+#                 category=category,
+#             ).delete()
+#
+#     categories_with_subscriptions = Category.objects.annotate(
+#         user_subscribed=Exists(
+#             Subscription.objects.filter(
+#                 user=request.user,
+#                 category=OuterRef('pk'),
+#             )
+#         )
+#     ).order_by('name')
+#     return render(
+#         request,
+#         'subscriptions.html',
+#         {'categories': categories_with_subscriptions},
+#     )
 
 
 class CategoryListView(NewsList):
@@ -145,18 +145,21 @@ class CategoryListView(NewsList):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_not_subscriber'] = self.request.user not in self.category.subscription.all()
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        print(f'{context = }')
         context['categories'] = self.category
-        # print(f'{context = }')
+
 
         return context
 
 
-# @login_required()
-# def subscribe(request, pk):
-#     user = request.user
-#     category = Category.objects.get(id=pk)
-#     category.subscribers.add(user)
+@login_required()
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
 
-    # message = "Вы успешно подписались"
-    # return render(request, 'subscribe.html', {'category': category, 'message': message})
+    message = "Вы успешно подписались"
+    return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+

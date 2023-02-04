@@ -6,11 +6,11 @@ Post
 {% endblock title %}
 
 {% block content %}
-
-<h1>Все новости</h1>
-    {% if is_not_subscriber %}
-        <p class="text-center"><a href="{% url 'subscriptions' %}"class="btn btn-secondary btn-sm">Подписаться</a></p><a
+{% if is_not_subscriber %}
+        <p class="text-center"><a href="{% url 'subscribe' categories.id %}"class="btn btn-secondary btn-sm">Подписаться</a></p><a
     {% endif %}
+<h1>Все новости</h1>
+
 
     {% if category_news_list %}
             <a href="{% url 'search' %}"class="btn btn-secondary btn-sm">Найти POST</a>
