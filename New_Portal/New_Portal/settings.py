@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
-    "django_apscheduler",
+    'django_apscheduler',
+    'django_celery_beat',
 
 ]
 
@@ -181,4 +182,4 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-
+CELERY_TIMEZONE = 'Europe/Moscow'

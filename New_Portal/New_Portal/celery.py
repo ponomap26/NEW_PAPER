@@ -6,7 +6,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'New_Portal.settings')
 
 app = Celery('New_Portal')
 app.config_from_object('django.conf:settings', namespace='CELERY')
-app.conf.timezone = 'Europe/Moscow'
+
 
 app.autodiscover_tasks()
 
