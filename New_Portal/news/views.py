@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404, redirect
 from datetime import datetime
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, View
-from .signals import notify_about_news
 from .models import Post, Category, Subscriber
 from .filters import PostFilter
 from .forms import NewsForm, NewsEdit, NewsDelete
