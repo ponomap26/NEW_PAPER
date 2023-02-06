@@ -1,19 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Exists
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from datetime import datetime
-from django.template.context import RequestContext, Context
-from django.template import context
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from django.views.generic.base import TemplateResponseMixin
-from unicodedata import category
-
-from .models import Post, Category, Subscriber, Subscriber
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, View
+from .signals import notify_about_news
+from .models import Post, Category, Subscriber
 from .filters import PostFilter
 from .forms import NewsForm, NewsEdit, NewsDelete
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 class NewsList(ListView):
@@ -101,7 +97,6 @@ class PostUpdate(PermissionRequiredMixin, UpdateView):
     template_name = 'news_edit.html'
 
 
-
 @login_required
 @csrf_protect
 def subscriptions(request):
@@ -149,7 +144,6 @@ class CategoryListView(NewsList):
         print(f'{context = }')
         context['categories'] = self.category
 
-
         return context
 
 
@@ -161,5 +155,6 @@ def subscribe(request, pk):
 
     message = "Вы успешно подписались"
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
 
 
