@@ -38,4 +38,4 @@ def notify_about_news(sender, instance, **kwargs):
             subscribers += category.subscribers.all()
 
         subscribers = [s.email for s in subscribers]
-        send_notification(instance.preview, instance.pk, instance.title, subscribers)
+        send_notification.delay(instance.preview, instance.pk, instance.title, subscribers)
