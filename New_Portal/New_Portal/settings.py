@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
     'django_apscheduler',
-    # 'django_celery_beat',
+    'django_celery_beat',
 
 ]
 
