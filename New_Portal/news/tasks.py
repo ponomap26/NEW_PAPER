@@ -33,7 +33,6 @@ def my_job():
     msg.attach_alternative(html_content, "text/html")
     msg.send()
 
-
 @shared_task
 def send_notification(preview, pk, title, subscribers):
     html_contect = render_to_string(
@@ -55,12 +54,4 @@ def send_notification(preview, pk, title, subscribers):
     msg.send()
 
 
-# @receiver(m2m_changed, sender=PostCategory)
-# def notify_about_news(sender, instance, **kwargs):
-#     if kwargs['action'] == 'post_add':
-#         categories = instance.category.all()
-#         subscribers: list[str] = []
-#         for category in categories:
-#             subscribers += category.subscribers.all()
-#         subscribers = [s.email for s in subscribers]
-#         send_notification(instance.preview, instance.pk, instance.title, subscribers)
+
