@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
@@ -28,7 +29,6 @@ class Category(models.Model):
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
-
         return f'{self.name}'
 
 
@@ -49,7 +49,12 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
 
     def get_absolute_url(self):
-        return reverse('new', args=[str(self.id)])
+        return f'/news/{self.id}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'news-{self.pk}')
+        print("AAAA")
 
     def like(self):
         self.rating += 1
@@ -66,8 +71,10 @@ class Post(models.Model):
         return f'{self.category, self.categoryType}'
 
 
+
+
 class PostCategory(models.Model):
-    post= models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):

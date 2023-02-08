@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.db.models import OuterRef, Exists
-from django.shortcuts import render, get_object_or_404, redirect
+from django.core.cache import cache
+from django.shortcuts import render, get_object_or_404
 from datetime import datetime
-from django.views.decorators.csrf import csrf_protect
+
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from .models import Post, Category, Subscriber
+from .models import Post, Category
 from .filters import PostFilter
 from .forms import NewsForm, NewsEdit, NewsDelete
 from django.urls import reverse_lazy
@@ -38,6 +38,18 @@ class NewsDetail(DetailView):
     model = Post
     template_name = 'new.html'
     context_object_name = 'new'
+    queryset = Post.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'news-{self.kwargs["pk"]}', None)
+
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'news-{self.kwargs["pk"]}', obj)
+            print("2222")
+
+        return obj
 
 
 class NewsSearch(ListView):
@@ -96,37 +108,6 @@ class PostUpdate(PermissionRequiredMixin, UpdateView):
     template_name = 'news_edit.html'
 
 
-# @login_required
-# @csrf_protect
-# def subscriptions(request):
-#     if request.method == 'POST':
-#         category_id = request.POST.get('category_id')
-#         category = Category.objects.get(id=category_id)
-#         action = request.POST.get('action')
-#
-#         if action == 'subscribe':
-#             Subscriber.objects.create(user=request.user, category=category)
-#         elif action == 'unsubscribe':
-#             Subscriber.objects.filter(
-#                 user=request.user,
-#                 category=category,
-#             ).delete()
-#
-#     categories_with_subscriptions = Category.objects.annotate(
-#         user_subscribed=Exists(
-#             Subscriber.objects.filter(
-#                 user=request.user,
-#                 category=OuterRef('pk'),
-#             )
-#         )
-#     ).order_by('name')
-#     return render(
-#         request,
-#         'subscriptions.html',
-#         {'categories': categories_with_subscriptions},
-#     )
-
-
 class CategoryListView(NewsList):
     model = Post
     template_name = 'category_list.html'
@@ -154,6 +135,3 @@ def subscribe(request, pk):
 
     message = "Вы успешно подписались"
     return render(request, 'subscribe.html', {'category': category, 'message': message})
-
-
-
