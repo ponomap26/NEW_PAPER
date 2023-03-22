@@ -1,5 +1,6 @@
 from django.urls import path
 
+from accounts.views import AuthorCreate, add_author
 from .views import subscribe
 # Импортируем созданное нами представление
 from .views import NewsList, NewsDetail, NewsSearch, PostDelete, PostUpdate, PostCreate, CategoryListView
@@ -13,5 +14,7 @@ urlpatterns = [
     path('<int:pk>/edit/', PostUpdate.as_view(), name='news_edit'),
     path('categories/<int:pk>', CategoryListView.as_view(), name='category_list'),
     path('categories/<int:pk>/subscribe/', subscribe, name='subscribe'),
-    # path('subscriptions/', subscriptions, name='subscriptions'),
+    path('author/<int:pk>', AuthorCreate.as_view(), name='author'),
+    # path('author/<int:pk>/subcr', add_author, name='add_author'),
+
 ]

@@ -6,8 +6,9 @@ from django.urls import reverse
 
 
 class Author(models.Model):
-    authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
+    authorUser = models.ForeignKey(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
+    # created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.authorUser}'
@@ -69,8 +70,6 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.category, self.categoryType}'
-
-
 
 
 class PostCategory(models.Model):

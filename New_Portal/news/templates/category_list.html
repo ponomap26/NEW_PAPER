@@ -5,6 +5,8 @@
 Post
 {% endblock title %}
 
+
+
 {% block content %}
 {% if is_not_subscriber %}
         <p class="text-center"><a href="{% url 'subscribe' categories.id %}"class="btn btn-secondary btn-sm">Подписаться</a></p><a

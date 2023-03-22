@@ -2,7 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from allauth.account.forms import SignupForm
-from django.core.mail import EmailMultiAlternatives, mail_managers,  mail_admins
+from django.core.mail import EmailMultiAlternatives, mail_managers, mail_admins
+
+from news.models import Author
 
 
 class SignUpForm(UserCreationForm):
@@ -25,8 +27,11 @@ class SignUpForm(UserCreationForm):
 class CustomSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
-        common_users = Group.objects.get(name="reader")
+
+        common_users = Group.objects.get(name="author")
+        Author.objects.create(authorUser=User.objects.get(pk=user.id))
         user.groups.add(common_users)
+        return user
 
         subject = 'Добро пожаловать в наш НОВОСТНОЙ ПОРТАЛ!'
         text = f'{user.username}, вы успешно зарегистрировались на сайте!'
@@ -49,3 +54,5 @@ class CustomSignupForm(SignupForm):
         )
 
         return user
+
+
