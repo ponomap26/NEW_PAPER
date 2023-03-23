@@ -201,26 +201,27 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'style': '{',
-    'formatters': {                 #FORMATTERS
-        'debug-format': {
+    'formatters': {  # FORMATTERS
+        'debug_format': {
             'format': '{asctime} {levelname} {message}',
             'style': '{',
         },
-        'info-format': {
+        'info_format': {
             'format': '{asctime} {levelname} {module} {message}',
             'style': '{',
         },
         'warning_format': {
-            'format': '{asctime} {levelname} {pathname} {message} {exc_info}',
+            'format': '{asctime} {levelname} {pathname} {message}',
             'style': '{',
         },
-        'error-format': {
+        'error_format': {
             'format': '{asctime} {levelname} {pathname} {message} {exc_info}',
             'style': '{',
         },
     },
-    'loggers': {                    # LOGGERS
+    'loggers': {  # LOGGERS
         'django': {
+            'level': 'DEBUG',
             'handlers': [
                 'debug_console',
                 'warning_console',
@@ -256,10 +257,10 @@ LOGGING = {
             'handlers': ['file_security'],
         },
     },
-    'handlers': {                       # HENDLER
+    'handlers': {  # HENDLER
         'debug_console': {
             'filters': ['debug_true'],
-            'formatter': 'debug-format',
+            'formatter': 'debug_format',
             'class': 'logging.StreamHandler',
         },
         'warning_console': {
@@ -271,25 +272,25 @@ LOGGING = {
         'error_console': {
             'level': 'ERROR',
             'filters': ['debug_true'],
-            'formatter': 'error-format',
+            'formatter': 'error_format',
             'class': 'logging.StreamHandler',
         },
         'file_info': {
             'level': 'INFO',
             'filters': ['debug_false'],
-            'formatter': 'info-format',
+            'formatter': 'info_format',
             'class': 'logging.FileHandler',
             'filename': 'general.log',
         },
         'file_error': {
             'level': 'ERROR',
-            'formatter': 'error-format',
+            'formatter': 'error_format',
             'class': 'logging.FileHandler',
             'filename': 'errors.log',
         },
         'file_security': {
             'level': 'INFO',
-            'formatter': 'info-format',
+            'formatter': 'info_format',
             'class': 'logging.FileHandler',
             'filename': 'security.log',
         },
@@ -301,7 +302,7 @@ LOGGING = {
         },
 
     },
-    'filters': {            # FILTERS
+    'filters': {  # FILTERS
         'debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
