@@ -6,3 +6,11 @@ Cоздан на Django.
  
  
  Скоро НОАВЯ ВЕРСИЯ!!!!!
+
+News portal!!!
+Built with Django. 
+The open source asynchronous task queue GELERY is used. 
+It is possible to add News, Articles.
+Edit. Delete. 
+
+Soon NEW VERSION!!!!!

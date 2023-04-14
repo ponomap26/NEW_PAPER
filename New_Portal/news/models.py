@@ -1,13 +1,17 @@
-from django.core.cache import cache
+from django.core.cache import cache  # type: ignore
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.urls import reverse
+from django.utils.translation import gettext as _
+from django.utils.translation import pgettext_lazy  # импортируем «ленивый» геттекст с подсказкой
 
 
 class Author(models.Model):
-    authorUser = models.ForeignKey(User, on_delete=models.CASCADE)
+    authorUser = models.ForeignKey(User, on_delete=models.CASCADE, help_text=_('Имя Автора'))
     ratingAuthor = models.SmallIntegerField(default=0)
+
     # created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -26,7 +30,8 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+
+    name = models.CharField(max_length=64, unique=True, help_text=_('Название категории'))
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
@@ -34,20 +39,20 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name="Автор")
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, help_text="Автор")
     NEWS = "NW"
     ARTICLE = "AT"
     CATEGORY_CHOICES = (
         (NEWS, 'НОВОСТЬ'),
         (ARTICLE, 'СТАТЬЯ'),
     )
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE,
-                                    verbose_name="Категория Публикации")
-    dataCreation = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
-    category = models.ManyToManyField(Category, through='PostCategory', verbose_name="Тип Поста")
-    title = models.CharField(max_length=128, verbose_name="Заголовок")
+    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE
+                                    )
+    dataCreation = models.DateTimeField(auto_now_add=True, )
+    category = models.ManyToManyField(Category, through='PostCategory')
+    title = models.CharField(max_length=128)
     text = models.TextField(verbose_name=' ТЕКСТ')
-    rating = models.SmallIntegerField(default=0, verbose_name="Рейтинг")
+    rating = models.SmallIntegerField(default=0)
 
     def get_absolute_url(self):
         return f'/news/{self.id}'

@@ -1,4 +1,5 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 {% load custom_filters %}
 {% load custom_tags %}
 {% block title %}
@@ -6,10 +7,7 @@ Post
 {% endblock title %}
 
 {% block content %}
-
-
-
-<h1>Все новости</h1>
+<h1>{% trans "Все новости" %}</h1>
 
 <hr>
 
@@ -22,10 +20,10 @@ Post
 {% if news %}
 <table>
     <tr>
-        <td>Описание</td>
-        <td> Категория</td>
-        <td>Дата добавления</td>
-        <td>Текст</td>
+        <td>{% trans "Описание" %}</td>
+        <td> {% trans "Категория" %}</td>
+        <td>{% trans "Все новости" %}</td>
+        <td>{% trans "Текст" %}</td>
 
         {# Условие получается составным. #}
         {% if perms.news.change_new or perms.news.delete_new %}
@@ -60,7 +58,7 @@ Post
 </table>
 <hr>
 {% else %}
-<h2>Новостей нет!</h2>
+<h2>"Новостей нет!"</h2>
 {% endif %}
 {# Информация о предыдущих страницах #}
 {% if page_obj.has_previous %}

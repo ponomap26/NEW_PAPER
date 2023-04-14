@@ -1,0 +1,9 @@
+2023-04-02 22:20:19,800 WARNING log Forbidden (CSRF token from POST incorrect.): /accounts/yandex/login/
+2023-04-03 19:45:48,204 WARNING base Session data corrupted
+2023-04-03 19:45:51,394 WARNING base Session data corrupted
+2023-04-03 19:45:56,198 WARNING base Session data corrupted
+2023-04-03 19:45:58,180 WARNING base Session data corrupted
+2023-04-03 19:45:59,406 WARNING base Session data corrupted
+2023-04-03 19:45:59,426 WARNING base Session data corrupted
+2023-04-03 19:46:02,606 WARNING base Session data corrupted
+2023-04-03 19:46:03,719 WARNING base Session data corrupted

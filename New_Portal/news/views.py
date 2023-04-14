@@ -1,18 +1,25 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.core.cache import cache
+from django.http import HttpResponse            # перев
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import Post, Category, Author
 from .filters import PostFilter
 from .forms import NewsForm, NewsEdit, NewsDelete
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-import logging
+from django.utils.translation import gettext as _
 
-logger = logging.getLogger(__name__)
+
+# import logging
+
+# logger = logging.getLogger(__name__)
+
+
 
 class NewsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -26,6 +33,7 @@ class NewsList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'news'
     paginate_by = 10
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -90,9 +98,9 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     model = Post
     template_name = 'news_create.html'
 
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user.authorUser
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.created_by = self.request.user.authorUser
+    #     return super().form_valid(form)
 
 
 class PostDelete(PermissionRequiredMixin, DeleteView):
@@ -140,24 +148,24 @@ def subscribe(request, pk):
     return render(request, 'subscribe.html', {'category': category, 'message': message})
 
 
-# class AuthorCreate(LoginRequiredMixin, CreateView):
-#     model = Author
-#     fields = ['authorUser']
-#     success_url = '/author'
-#     template_name = 'author.html'
-#
-#     def form_valid(self, form):
-#         form.instance.authorUser = self.request.user
-#         return super().form_valid(form)
-#
-#     @login_required()
-#     def add_author(request, pk):
-#         user = request.user
-#         Author.objects.create(authorUser=User.objects.get(pk=user.id))
-#         author_group = Group.objects.get(name="author")
-#         user.groups.add(author_group)
-#         print("123")
-#         return user
-#
-#         message = "Вы стали автором"
-#         return render(request, 'author.html', {'user': user, 'message': message})
+class AuthorCreate(LoginRequiredMixin, CreateView):
+    model = Author
+    fields = ['authorUser']
+    success_url = '/author'
+    template_name = 'author.html'
+
+    def form_valid(self, form):
+        form.instance.authorUser = self.request.user
+        return super().form_valid(form)
+
+    @login_required()
+    def add_author(request, pk):
+        user = request.user
+        Author.objects.create(authorUser=User.objects.get(pk=user.id))
+        author_group = Group.objects.get(name="author")
+        user.groups.add(author_group)
+        print("123")
+        return user
+
+        message = "Вы стали автором"
+        return render(request, 'author.html', {'user': user, 'message': message})
