@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u^sk!^xor#4bb4gk4bxa=y@0owlc#1$7g_ut1&#8bh@&bxvh41'
+SECRET_KEY = 'KEY_SECRET'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,13 +45,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
     'django_apscheduler',
-    # 'django_celery_beat',
+
 
 ]
 
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     # 'django.middleware.cache.UpdateCacheMiddleware',
     # 'django.middleware.common.CommonMiddleware',
     # 'django.middleware.cache.FetchFromCacheMiddleware',
@@ -83,7 +86,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'New_Portal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -116,7 +118,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
+LANGUAGES = [
+    ('en-us', 'English'),
+    ('ru', 'Русский')]
+
+
+
 
 TIME_ZONE = 'UTC'
 
@@ -154,12 +162,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "eveonline81@yandex.ru"
-EMAIL_HOST_PASSWORD = "ghwevybodrlfbfmp"
+EMAIL_HOST_PASSWORD = "HOST_PASSWORD"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -201,27 +209,26 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'style': '{',
-    'formatters': {  # FORMATTERS
-        'debug_format': {
+    'formatters': {                 #FORMATTERS
+        'debug-format': {
             'format': '{asctime} {levelname} {message}',
             'style': '{',
         },
-        'info_format': {
+        'info-format': {
             'format': '{asctime} {levelname} {module} {message}',
             'style': '{',
         },
         'warning_format': {
-            'format': '{asctime} {levelname} {pathname} {message}',
+            'format': '{asctime} {levelname} {pathname} {message} {exc_info}',
             'style': '{',
         },
-        'error_format': {
+        'error-format': {
             'format': '{asctime} {levelname} {pathname} {message} {exc_info}',
             'style': '{',
         },
     },
-    'loggers': {  # LOGGERS
+    'loggers': {                    # LOGGERS
         'django': {
-            'level': 'DEBUG',
             'handlers': [
                 'debug_console',
                 'warning_console',
@@ -257,10 +264,10 @@ LOGGING = {
             'handlers': ['file_security'],
         },
     },
-    'handlers': {  # HENDLER
+    'handlers': {                       # HENDLER
         'debug_console': {
             'filters': ['debug_true'],
-            'formatter': 'debug_format',
+            'formatter': 'debug-format',
             'class': 'logging.StreamHandler',
         },
         'warning_console': {
@@ -272,25 +279,25 @@ LOGGING = {
         'error_console': {
             'level': 'ERROR',
             'filters': ['debug_true'],
-            'formatter': 'error_format',
+            'formatter': 'error-format',
             'class': 'logging.StreamHandler',
         },
         'file_info': {
             'level': 'INFO',
             'filters': ['debug_false'],
-            'formatter': 'info_format',
+            'formatter': 'info-format',
             'class': 'logging.FileHandler',
             'filename': 'general.log',
         },
         'file_error': {
             'level': 'ERROR',
-            'formatter': 'error_format',
+            'formatter': 'error-format',
             'class': 'logging.FileHandler',
             'filename': 'errors.log',
         },
         'file_security': {
             'level': 'INFO',
-            'formatter': 'info_format',
+            'formatter': 'info-format',
             'class': 'logging.FileHandler',
             'filename': 'security.log',
         },
@@ -302,7 +309,7 @@ LOGGING = {
         },
 
     },
-    'filters': {  # FILTERS
+    'filters': {            # FILTERS
         'debug_true': {
             '()': 'django.utils.log.RequireDebugTrue',
         },
@@ -312,3 +319,8 @@ LOGGING = {
 
     },
 }
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]

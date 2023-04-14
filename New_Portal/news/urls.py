@@ -4,6 +4,7 @@ from accounts.views import AuthorCreate, add_author
 from .views import subscribe
 # Импортируем созданное нами представление
 from .views import NewsList, NewsDetail, NewsSearch, PostDelete, PostUpdate, PostCreate, CategoryListView
+""" настройка """
 
 urlpatterns = [
     path('', NewsList.as_view(), name='news'),

@@ -3,19 +3,17 @@ from django.forms import DateTimeInput
 from .models import Post
 
 
-# Создаем свой набор фильтров для модели Product.
-# FilterSet, который мы наследуем,
-# должен чем-то напомнить знакомые вам Django дженерики.
 class PostFilter(FilterSet):
     added_after = DateTimeFilter(
         field_name='dataCreation',
         lookup_expr='gt',
-        label = "Дата публикации не познее",
+        label="Дата публикации не позднее",
         widget=DateTimeInput(
             format='%Y-%m-%d',
             attrs={'type': 'datetime-local'},
         ),
     )
+
     class Meta:
         # В Meta классе мы должны указать Django модель,
         # в которой будем фильтровать записи.
