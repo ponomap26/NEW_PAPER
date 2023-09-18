@@ -30,6 +30,10 @@
    ```
    venv\Scripts\activate
    ```
+    и установите зависимости:
+   ```
+   pip install -r requirements.txt
+   ```
 
 4. Перейдите в каталог "news":
 
